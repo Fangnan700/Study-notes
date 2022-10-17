@@ -146,5 +146,3 @@ hexo g -d
 上传完成，使用cos提供的url即可访问博客。
 
 需要上传的md文件存入hexo项目文件夹的source/_posts文件夹中即可。
-
-测试测试测试
