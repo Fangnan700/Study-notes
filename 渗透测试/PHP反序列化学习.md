@@ -75,7 +75,27 @@ __toString()方法设置了当一个对象被当做字符串时应当如何处�
 当unserialize()函数的参数可控时，就形成了反序列化漏洞。所谓的反序列化漏洞利用，就是通过构造unserialize()函数的参数，使得反序列化过程中，执行我们想要的操作。
 
 **漏洞实例**
+
+最简单的反序列化漏洞：
+
+```php
+<?php
+error_reporting(0);
+include "flag.php";
+$KEY = "D0g3!!!";
+$str = $_GET['str'];
+if (unserialize($str) === "$KEY"){
+    echo "$flag";
+}
+show_source(__FILE__);
+```
+
+这题只需要构造get请求的payload为$KEY的序列化字符串即可。
+
+
+
 绕过__wakeup()方法：
+
 ```php
 <?php 
 class SoFun{ 
