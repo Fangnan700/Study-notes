@@ -7,8 +7,11 @@ class Read {
     {
         $text = base64_encode(file_get_contents($value));   // file_get_contents()函数可以读取文件
         return $text;
-    }
-    public function __invoke(){
+	}
+	// 当把Read类的对象当做函数执行时，就会触发这里的__invoke()魔术方法
+	public function __invoke(){
+		// 这里的var是形参，实参是value: 
+		// $content 从上面的file_get处获得，传入参数var即可控制file_get函数中的file_get_contents()所读取的文件，即把var赋值为flag.php以读取flag
         $content = $this->file_get($this->var);
         echo $content;
     }
@@ -59,7 +62,8 @@ class Test
 
     // 若Show类中的__toString()函数返回的str数组里key值为str的值指向的source是一个Test类的对象，那么就会触发这里的__get()魔术方法
     public function __get($key)
-    {
+	{
+		// 这里将Test类对象中的p变量取出，赋值给function后通过return function()把function当做函数执行，若这里的p是某个具有__invoke()方法的对象，则会触发该方法 --> Read类 
         $function = $this->p;
         return $function();
     }
