@@ -95,7 +95,7 @@ public static void main(String[] args) {
 ```java
 public static void main(String[] args) {
         try (Socket socket = new Socket("localhost", 8080);
-             Scanner scanner = new Scanner(System.in)){
+            Scanner scanner = new Scanner(System.in)){
             System.out.println("已连接到服务端！");
             OutputStream stream = socket.getOutputStream();
             OutputStreamWriter writer = new OutputStreamWriter(stream);  //通过转换流来帮助我们快速写入内容

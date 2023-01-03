@@ -227,7 +227,11 @@ String[] args为字符串类型的数组，是main()方法的参数
 
 
 
-# 二、基本数据类型
+# 二、数据类型
+
+**Java中的数据类型可分为基本数据类型和引用数据类型。**
+
+
 
 Java中有8中基本数据类型：
 
@@ -369,6 +373,8 @@ boolean myboolean = true;
 程序执行过程中可以被改变的量成为变量，不能被改变的量成为常量。
 
 变量就是用来存储某个数据的内存区域，可以理解为一个“盒子”，且里面存储的数据可以改变。
+
+变量就是申请内存来存储值。也就是说，当创建变量的时候，需要在内存中申请空间。
 
 ## 3.1 标识符和关键字
 
@@ -1552,21 +1558,9 @@ System.out.println(str.contains("金三胖"));	// >> true
 
 
 
-# 九、集合
+# 九、ArrayList
 
-## 9.1 集合概述
-
-**什么是集合？**
-
-集合与数组类似，是一种容器，用于装数据。
-
-集合的大小不固定，可以动态分配，所存储的数据类型也不固定。
-
-集合提供了许多常用的功能，可以直接调用对应的方法。
-
-
-
-## 9.2 ArrayList
+## 9.1 ArrayList
 
 **什么是ArrayList？**
 
@@ -1599,7 +1593,7 @@ ArrayList list = new ArrayList();
 
 
 
-## 9.3 ArrayList对泛型的支持
+## 9.2 ArrayList对泛型的支持
 
 **什么是泛型？**
 
@@ -1639,7 +1633,7 @@ public class new_ArrayList {
 
 
 
-## 9.4 ArrayList的常用API
+## 9.3 ArrayList的常用API
 
 **获取指定索引位置的元素值**
 
@@ -3877,6 +3871,79 @@ public class Test2 {
 
 
 
+# 十八、Lambda表达式
+
+**什么是Lambda表达式？**
+
+Lambda表达式是jdk8之后的一种新语法形式，主要用于简化匿名内部类的代码写法。
+
+![image-20221212102148482](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221212102148482.png)
+
+
+
+**注意：Lambda表达式只能简化函数式接口的匿名内部类，而不是所有匿名内部类！！！**
+
+例如：
+
+```java
+public class Test {
+    public static void main(String[] args) {
+
+        // 匿名内部类的一般写法
+        Animal a1 = new Animal() {
+            @Override
+            public void run() {
+                System.out.println("这是动物1");
+            }
+        };
+
+        // 错误的Lambda表达式简化
+        Animal a2 = () -> {
+            System.out.println("这是动物2");
+        }
+    }
+}
+
+abstract class Animal {
+    public abstract void run();
+}
+```
+
+
+
+**什么是函数式接口？**
+
+1. 首先必须是接口，其次接口中有且只有一个抽象方法
+2. 一般使用@FunctionalInterface注解进行标记
+
+例如：
+
+```java
+public class Test {
+    public static void main(String[] args) {
+
+        // 一般写法
+        Animal a1 = new Animal() {
+            @Override
+            public void run(String name) {
+                System.out.println("这是动物1:" + name);
+            }
+        };
+        a1.run("乌龟");
+
+        // Lambda表达式简化
+        Animal a2 = (String name) -> {
+            System.out.println("这是动物2:" + name);
+        };
+        a2.run("兔子");
+    }
+}
+
+@FunctionalInterface
+interface Animal {
+    public abstract void run(String name);
+}
+```
 
 
 
@@ -3886,25 +3953,131 @@ public class Test2 {
 
 
 
+# 十九、集合类
+
+## 19.1 集合概述
+
+**什么是集合？**
+
+集合与数组类似，是一种容器，用于装数据。
+
+数组的类型确定、大小固定，且增删数据都需要移动大量数据，效率较低。
+
+集合的大小不固定，可以动态分配，所存储的数据类型也不固定。
+
+集合只支持引用数据类型，不支持基本数据类型，若要使用集合存储基本数据类型，可以使用对应的包装类。
+
+集合提供了许多常用的功能，可以直接调用对应的方法。
+
+
+
+**集合的适用场景**
+
+- 数据个数不确定，需要增删数据
+
+![image-20221212105145983](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221212105145983.png)
 
 
 
 
 
+## 19.2 集合的体系结构
+
+![image-20221212105502335](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221212105502335.png)
 
 
 
 
 
+## 19.3 Collection集合体系
+
+Collection是单列集合的祖类，是一个接口，不能直接创建对象，只能使用它的实现类来创建对象。
+
+![image-20221212105731491](https://yvling-typora-image-1257337367.cos.ap-nanjing.myqcloud.com/typora/image-20221212105731491.png)
+
+
+
+**Collection集合子家族的特点**
+
+- List类的特点：
+  - 内部存储的元素有序、有索引、可重复
+- Set类的特点：
+  - 内部存储的元素无序、无索引、不可重复
+
+
+
+集合都是支持泛型的，可以在编译阶段约束集合只操作某种类型的数据。
+
+例如：
+
+```java
+Collection<String> lists = new ArrayList<>();
+```
+
+
+
+## 19.4 Collection集合的常用API
+
+**1、添加元素**
+
+```java
+lists.add();
+```
+
+**2、清空元素**
+
+```java
+lists.clear();
+```
+
+**3、判断是否为空**
+
+```java
+lists.isEmpty();
+```
+
+**4、获取集合大小**
+
+```java
+lists.size();
+```
+
+**5、判断集合中是否包含某个元素**
+
+```java
+lists.contains();
+```
+
+**6、删除某个元素**(有多个重复元素时，默认删除第一个)
+
+```java
+lists.remove();
+```
+
+**7、把集合转换成数组**
+
+```java
+lists.toArray();
+```
+
+**8、把某个集合中的元素全部拷贝到当前集合中**
+
+```java
+lists.addAll();
+```
 
 
 
 
 
+## 19.5 Collection集合的遍历
 
+**迭代器遍历——iterator**
 
+使用步骤：
 
-
+1. 获取集合的迭代器对象
+2. 
 
 
 
